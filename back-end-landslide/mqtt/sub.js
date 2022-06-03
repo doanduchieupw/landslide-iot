@@ -3,7 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
-const Sensor = require('../model/sensorModel');
+const Sensor = require('../models/Sensor');
 
 //using dotenv
 dotenv.config();
