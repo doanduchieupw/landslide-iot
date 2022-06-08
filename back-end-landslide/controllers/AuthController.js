@@ -14,14 +14,16 @@ const authController = {
             const usernameCheck = await User.findOne({ username });
             if (usernameCheck) {
                 return res.json({
-                    msg: 'This username is already taken. Please choose another name',
+                    message: 'This username is already taken. Please choose another name',
+                    type: 'username',
                     status: false,
                 });
             }
             const emailCheck = await User.findOne({ email });
             if (emailCheck) {
                 return res.json({
-                    msg: 'This email address is already being used',
+                    message: 'This email address is already being used',
+                    type: 'email',
                     status: false,
                 });
             }
@@ -68,6 +70,7 @@ const authController = {
 
     login: async (req, res) => {
         try {
+            console.log(req.body);
             const { username, password } = req.body;
             const user = await User.findOne({ username });
             const isPasswordInvalid = await bcrypt.compare(
@@ -77,7 +80,8 @@ const authController = {
 
             if (!username || !isPasswordInvalid) {
                 return res.json({
-                    msg: 'Username or password are wrong!',
+                    message: 'Username or password are wrong!',
+                    type: 'username',
                     status: false,
                 });
             }

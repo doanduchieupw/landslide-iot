@@ -1,0 +1,12 @@
+.custom-radio {
+    width: 10px;
+    height: 10px;
+}
+
+.custom-radio > div {
+    box-shadow: 0 0 0 5px white;
+}
+
+.custom-radio input:checked + div {
+    @apply bg-blue-500;
+}
