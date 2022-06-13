@@ -43,7 +43,6 @@ const brokerConfig = {
     password: process.env.MQTT_PASSWORD,
 }
 const client = mqtt.connect(process.env.MQTT_BROKER_URL, brokerConfig)
-console.log("🚀 ~ file: index.js ~ line 44 ~ client", client)
 const topic = 'getData';
 
 

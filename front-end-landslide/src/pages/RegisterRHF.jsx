@@ -33,14 +33,12 @@ const validationSchema = Yup.object({
 const Register = () => {
     const {
         handleSubmit,
-        setFocus,
         setError,
         control,
         formState: { errors, isSubmitting, isValid },
     } = useForm({ resolver: yupResolver(validationSchema), mode: 'onChange' });
 
     const navigate = useNavigate();
-    const successTimer = useRef(null);
     const [isSuccess, setIsSuccess] = useState(false);
 
     const onSubmit = async (values) => {
