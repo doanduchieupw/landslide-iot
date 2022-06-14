@@ -24,10 +24,10 @@ mongoose
 //Broker config
 const brokerConfig = {
     clientId: 'hieu-sub',
-    username: process.env.MQTT_USERNAME,
-    password: process.env.MQTT_PASSWORD,
+    username: 'landslide',
+    password: 'oYPSNMspLlNXX5o8',
 }
-const client = mqtt.connect(process.env.MQTT_BROKER_URL, brokerConfig)
+const client = mqtt.connect('mqtt://landslide.cloud.shiftr.io:1883', brokerConfig)
 const topic = 'getData';
 
 
