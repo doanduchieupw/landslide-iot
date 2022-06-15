@@ -1,12 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import axios from 'axios';
 
-import InputHook from '../components/Input/InputRHF';
-import RadioHook from '../components/Radio/RadioHook';
+import { InputHook, RadioHook } from '../components';
 import { registerRoute } from '../utils/APIRoutes';
 import CheckMark from '../assets/checkmark.gif';
 
@@ -64,11 +63,6 @@ const Register = () => {
             }
         }
     };
-
-    // useEffect(() => {
-    //     setTimeout(() => navigate('/'), 1000);
-    //     return () => clearTimeout(successTimer);
-    // }, [isSuccess]);
 
     return (
         <>
@@ -178,6 +172,15 @@ const Register = () => {
                             'Sign Up'
                         )}
                     </button>
+                    <div className="mt-2 text-center text-gray-600">
+                        Already have an account ?{' '}
+                        <Link
+                            className="text-blue-600 underline italic"
+                            to="/login"
+                        >
+                            Sign in
+                        </Link>
+                    </div>
                 </form>
             )}
         </>

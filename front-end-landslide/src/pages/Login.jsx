@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -6,6 +6,7 @@ import axios from 'axios';
 
 import InputHook from '../components/Input/InputRHF';
 import { loginRoute } from '../utils/APIRoutes';
+import { Link } from 'react-router-dom';
 
 const validationSchema = Yup.object({
     username: Yup.string()
@@ -19,7 +20,7 @@ const validationSchema = Yup.object({
             /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
             'The password at least one letter and one number'
         )
-        .required('Required!')
+        .required('Required!'),
 });
 
 const Login = () => {
@@ -38,8 +39,10 @@ const Login = () => {
                 username,
                 password,
             });
-            console.log("🚀 ~ file: Login.jsx ~ line 46 ~ onSubmit ~ data", data)
-
+            console.log(
+                '🚀 ~ file: Login.jsx ~ line 46 ~ onSubmit ~ data',
+                data
+            );
         }
     };
 
@@ -94,6 +97,12 @@ const Login = () => {
                     'Login'
                 )}
             </button>
+            <div className="mt-2 text-center text-gray-600">
+                Don't have an account?{' '}
+                <Link className="text-blue-600 underline italic" to="/register">
+                    Sign up
+                </Link>
+            </div>
         </form>
     );
 };
