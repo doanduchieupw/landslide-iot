@@ -1,11 +1,13 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit';
-import { globalSilce } from './reducers/globalSlice';
+import globalSilce from './reducers/globalSlice';
 
 const rootReducer = combineReducers({
     global: globalSilce,
 });
-export const store = configureStore({
+const store = configureStore({
     reducer: {
         global: globalSilce,
     },
 });
+
+export default store;

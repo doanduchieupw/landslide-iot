@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const globalSilce = createSlice({
+const globalSilce = createSlice({
     name: 'global',
     initialState: {
         darkMode: false,

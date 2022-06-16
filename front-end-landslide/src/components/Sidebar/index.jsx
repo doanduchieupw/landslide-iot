@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartLine, faCircleQuestion, faCloudRain, faInbox, faMicroscope, faTemperatureHalf } from '@fortawesome/free-solid-svg-icons';
+import {
+    faChartLine,
+    faCircleQuestion,
+    faCloudRain,
+    faInbox,
+    faMicroscope,
+    faTemperatureHalf,
+} from '@fortawesome/free-solid-svg-icons';
 
 const sidebarList = [
     {
@@ -77,9 +84,8 @@ const Sidebar = () => {
             <div className="mt-10">
                 {sidebarList.map((item, index) => {
                     return (
-                        <div>
+                        <div key={index}>
                             <Link
-                                key={index}
                                 to={`${item.to}`}
                                 className={`text-white text-lg flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white
                                  rounded-md ${item.gap ? 'mt-9' : 'mt-4'}`}
