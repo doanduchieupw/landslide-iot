@@ -6,7 +6,9 @@ import axios from 'axios';
 
 import InputHook from '../components/Input/InputRHF';
 import { loginRoute } from '../utils/APIRoutes';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../redux/reducers/apiRequest';
 
 const validationSchema = Yup.object({
     username: Yup.string()
@@ -24,6 +26,8 @@ const validationSchema = Yup.object({
 });
 
 const Login = () => {
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
     const {
         handleSubmit,
         setFocus,
@@ -31,18 +35,11 @@ const Login = () => {
         formState: { errors, isSubmitting, isValid },
     } = useForm({ resolver: yupResolver(validationSchema), mode: 'onChange' });
 
-    const onSubmit = async (values) => {
+    const onSubmit =  (user) => {
         if (isValid) {
-            console.log(values);
-            const { username, password } = values;
-            const { data } = await axios.post(loginRoute, {
-                username,
-                password,
-            });
-            console.log(
-                '🚀 ~ file: Login.jsx ~ line 46 ~ onSubmit ~ data',
-                data
-            );
+            const { username, password } = user;
+            loginUser(user, dispatch, navigate);
+            
         }
     };
 

@@ -1,5 +1,9 @@
+import { Chart } from "../components";
+
 const Accelerometer = () => {
-    return <div className='text-3xl text-green-600 font-bold underline'>Accelerometer</div>
+    return <div className='w-full'>
+        <div style={{"maxWidth":"1000px"}} className='mx-auto'><Chart type='acc'/></div>
+    </div>
 }
  
 export default Accelerometer;

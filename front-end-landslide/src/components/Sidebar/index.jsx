@@ -9,6 +9,7 @@ import {
     faMicroscope,
     faTemperatureHalf,
 } from '@fortawesome/free-solid-svg-icons';
+import { useSelector } from 'react-redux';
 
 const sidebarList = [
     {
@@ -46,31 +47,33 @@ const sidebarList = [
 
 const Sidebar = () => {
     const [open, setOpen] = useState(true);
+    const user = useSelector((state) => state.auth.login.currentUser);
+    
     return (
         <div
             className={`sidebar ${
                 open ? 'w-72' : 'w-20'
-            } p-3 pt-5 duration-300 h-screen bg-royal-blue relative`}
+            } p-3 pt-5 duration-300 h-screen border-r border-r-royal-blue bg-royal-blue relative dark:bg-black-sidebar dark:border-r-slate-50`}
         >
             <img
-                src="/images/control.png"
-                alt="control"
-                className={`absolute cursor-pointer rounded-full -right-4 top-9 w-9 border-2 border-royal-blue ${
+                src='/images/control.png'
+                alt='control'
+                className={`absolute cursor-pointer rounded-full -right-4 top-9 w-9 border-2 border-royal-blue dark:border-slate-50 z-10 ${
                     !open && 'rotate-180'
                 }`}
                 onClick={() => setOpen(!open)}
             />
 
             <div>
-                <Link className="flex gap-x-4 items-center" to="/">
+                <Link className='flex gap-x-4 items-center' to='/'>
                     <img
-                        src="/images/hust-logo.jpg"
-                        alt="logo"
-                        className="cursor-pointer duration-300 w-14"
+                        src='/images/hust-logo.jpg'
+                        alt='logo'
+                        className='cursor-pointer duration-300 w-14'
                     />
 
                     <h1
-                        className={`text-white origin-left font-medium text-3xl duration-300 ${
+                        className={`text-white dark:text-black-font origin-left font-medium text-3xl duration-300 ${
                             !open && 'scale-0'
                         }`}
                     >
@@ -79,15 +82,15 @@ const Sidebar = () => {
                 </Link>
             </div>
 
-            <div className="mt-5 border-b border-gray-400 opacity-50"></div>
+            <div className='mt-5 border-b border-gray-400 opacity-50'></div>
 
-            <div className="mt-10">
+            <div className='mt-10'>
                 {sidebarList.map((item, index) => {
                     return (
                         <div key={index}>
                             <Link
                                 to={`${item.to}`}
-                                className={`text-white text-lg flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white
+                                className={`text-white dark:text-black-font dark:hover:text-white text-lg flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white
                                  rounded-md ${item.gap ? 'mt-9' : 'mt-4'}`}
                             >
                                 <p className={`leading-7 ml-2`}>{item.icon}</p>
@@ -103,6 +106,16 @@ const Sidebar = () => {
                     );
                 })}
             </div>
+
+            {}
+
+            {user ? (
+                <div className='text-white'>{`hello ${user.username}`}</div>
+            ) : (
+                <Link to='/login' className='text-white'>
+                    Login
+                </Link>
+            )}
         </div>
     );
 };
