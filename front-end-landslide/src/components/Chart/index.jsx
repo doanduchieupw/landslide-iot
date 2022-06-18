@@ -27,7 +27,13 @@ ChartJS.register(
 
 const Chart = ({ type }) => {
     const { darkMode } = useSelector((state) => state.global);
+
     const options = {
+        animation: {
+            duration: 50,
+                // easing: 'linear',
+          
+        },
         responsive: true,
         plugins: {
             legend: {
@@ -131,13 +137,16 @@ const Chart = ({ type }) => {
         return () => clearInterval(timeCallApi);
     }, []);
 
-
-
-    return <>
-    {!dataChart && <div className="w-full h-[100vh] flex justify-center items-center">
-                    <img src={Loading} alt="loading" />
-                </div>}
-    {dataChart && <Line options={options} data={dataChart} />}</>;
+    return (
+        <>
+            {!dataChart && (
+                <div className='w-full h-[100vh] flex justify-center items-center'>
+                    <img src={Loading} alt='loading' />
+                </div>
+            )}
+            {dataChart && <Line options={options} data={dataChart} />}
+        </>
+    );
 };
 
 export default Chart;

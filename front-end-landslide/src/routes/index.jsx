@@ -7,6 +7,7 @@ const publicRoutes = [
     { path: '/gyroscope', component: Gyroscope },
     { path: '/register', component: Register, layout: 'none'},
     { path: '/login', component: Login, layout: 'none'},
+    // { path: '/logout', },
 ];
 const privateRoutes = [];
 

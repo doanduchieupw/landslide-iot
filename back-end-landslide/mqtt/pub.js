@@ -38,5 +38,5 @@ client.on('connect', () => {
         let message = JSON.stringify(data);
         client.publish(topic, message);
         console.log('Message sent!: ', message);
-    }, 5000);
+    }, 500);
 });

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faChartLine,
@@ -7,9 +7,16 @@ import {
     faCloudRain,
     faInbox,
     faMicroscope,
+    faRightFromBracket,
+    faRightToBracket,
     faTemperatureHalf,
 } from '@fortawesome/free-solid-svg-icons';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import { refreshTokenRoute } from '../../utils/APIRoutes';
+import { loginSuccess } from '../../redux/reducers/authSlice';
+import { logoutUser } from '../../redux/reducers/apiRequest';
 
 const sidebarList = [
     {
@@ -48,7 +55,45 @@ const sidebarList = [
 const Sidebar = () => {
     const [open, setOpen] = useState(true);
     const user = useSelector((state) => state.auth.login.currentUser);
-    
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const id = user?._id;
+    const accessToken = user?.accessToken;
+
+    let axiosJWT = axios.create();
+
+    const refreshToken = async () => {
+        try {
+            const res = await axios.post(refreshTokenRoute, {
+                withCredentials: true,
+            });
+            return res.data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+
+    axiosJWT.interceptors.request.use(
+        async (config) => {
+            let date = new Date();
+            const decodedToken = jwt_decode(user?.accessToken);
+            if (decodedToken.exp < date.getTime / 1000) {
+                const data = await refreshToken();
+                const refreshUser = {
+                    ...user,
+                    accessToken: data.accessToken,
+                };
+                dispatch(loginSuccess(refreshUser));
+                config.headers['token'] = `Bearer ${data.accessToken}`;
+            }
+            return config;
+        },
+        (err) => Promise.reject(err)
+    );
+
+    const handleLogout = () => {
+        logoutUser(dispatch, id, navigate, accessToken, axiosJWT)
+    }
     return (
         <div
             className={`sidebar ${
@@ -107,15 +152,43 @@ const Sidebar = () => {
                 })}
             </div>
 
-            {}
-
-            {user ? (
-                <div className='text-white'>{`hello ${user.username}`}</div>
-            ) : (
-                <Link to='/login' className='text-white'>
-                    Login
-                </Link>
-            )}
+            <div className='absolute bottom-3 left-0 right-0'>
+                {user ? (
+                    <div className='text-white flex flex-col items-center gap-y-4'>
+                        <p className={`${!open && 'hidden'}`}>
+                            Hi, <span className=''>{user.username}</span>!
+                        </p>
+                        <Link
+                            to='/logout'
+                            className={`text-royal-blue font-bold  rounded-md bg-royal-orange flex justify-center gap-x-4 ${
+                                open ? 'px-10 py-3' : 'px-4 py-2'
+                            }`}
+                            onClick={handleLogout}
+                        >
+                            <p className={`${!open && 'hidden'} self-center`}>
+                                Logout
+                            </p>
+                            <p className={`leading-7`}>
+                                <FontAwesomeIcon icon={faRightFromBracket} />
+                            </p>
+                        </Link>
+                    </div>
+                ) : (
+                    <Link
+                        to='/login'
+                        className={`text-royal-blue font-bold  rounded-md bg-royal-orange flex justify-center gap-x-4 mx-auto ${
+                            open ? 'px-10 py-3' : 'px-4 py-2'
+                        }`}
+                    >
+                        <span className={`${!open && 'hidden'} self-center`}>
+                            Login
+                        </span>
+                        <span className={`leading-7 ml-3`}>
+                            <FontAwesomeIcon icon={faRightToBracket} />
+                        </span>
+                    </Link>
+                )}
+            </div>
         </div>
     );
 };

@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { loginRoute, registerRoute } from '../../utils/APIRoutes';
-import { loginFailed, loginStart, loginSuccess, registerFailed, registerStart, registerSuccess } from './authSlice';
+import { loginRoute, logoutRoute, registerRoute } from '../../utils/APIRoutes';
+import { loginFailed, loginStart, loginSuccess, logoutFailed, logoutStart, logoutSuccess, registerFailed, registerStart, registerSuccess } from './authSlice';
 
 export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
@@ -27,5 +27,18 @@ export const registerUser = async (user, dispatch, navigate) => {
         navigate('/');
     } catch (err) {
         dispatch(registerFailed());
+    }
+};
+
+export const logoutUser = async (dispatch,id, navigate, token, axiosJWT) => {
+    dispatch(logoutStart());
+    try {
+        await axiosJWT.post(logoutRoute, id,  {
+            headers: `Bearer ${token}`
+        })
+        dispatch(logoutSuccess());
+        navigate('/login');
+    } catch (err) {
+        dispatch(logoutFailed());
     }
 };

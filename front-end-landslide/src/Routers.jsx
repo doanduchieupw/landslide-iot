@@ -7,7 +7,7 @@ const Routers = () => {
     return (
         <Routes>
             {publicRoutes.map((route, index) => {
-                const Page = route.component;
+                const Page = route?.component || <></>;
                 let LayoutMain = Layout
                 if (route.layout === 'none') {
                     LayoutMain = Fragment
@@ -25,6 +25,7 @@ const Routers = () => {
                     />
                 );
             })}
+            <Route path='/logout' />
         </Routes>
     );
 };
