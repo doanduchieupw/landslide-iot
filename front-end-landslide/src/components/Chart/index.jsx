@@ -12,6 +12,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import * as mqtt from 'mqtt';
 
 import Loading from '../../assets/loading.gif';
 
@@ -25,15 +26,34 @@ ChartJS.register(
     Legend
 );
 
+//Option chart
+const rangeOfChart = 40;
+
+// MQTT config
+const brokerConfig = {
+    clientId: 'hieu-graph',
+    username: 'landslide',
+    password: 'oYPSNMspLlNXX5o8',
+};
+const client = mqtt.connect(
+    'wss://landslide.cloud.shiftr.io:443',
+    brokerConfig
+);
+const topic = 'getData';
+let result = {
+    labels: [],
+    x: [],
+    y: [],
+    z: [],
+};
+
+// Component Chart
 const Chart = ({ type }) => {
     const { darkMode } = useSelector((state) => state.global);
+    const [indexOfChart, setIndexOfChart] = useState(0);
 
     const options = {
-        animation: {
-            duration: 50,
-                // easing: 'linear',
-          
-        },
+        animation: false,
         responsive: true,
         plugins: {
             legend: {
@@ -59,6 +79,12 @@ const Chart = ({ type }) => {
                     color: darkMode ? '#9c9c9c' : '#888',
                     borderColor: darkMode ? '#9c9c9c' : '#888',
                 },
+                min:
+                    indexOfChart <= rangeOfChart
+                        ? 0
+                        : indexOfChart - rangeOfChart,
+                max: indexOfChart <= rangeOfChart ? rangeOfChart : indexOfChart,
+                beginAtZero: false,
             },
             y: {
                 ticks: {
@@ -75,21 +101,13 @@ const Chart = ({ type }) => {
     const [dataChart, setDataChart] = useState();
 
     const convertDataChart = (data) => {
-        const result = {
-            labels: [],
-            x: [],
-            y: [],
-            z: [],
-        };
-
-        if (data.length > 0) {
-            data.map((item) => {
-                result.labels.push(item.createdAt.split('T')[1].split('.')[0]);
-                result.x.push(type === 'acc' ? item.accX : item.gyX);
-                result.y.push(type === 'acc' ? item.accY : item.gyY);
-                result.z.push(type === 'acc' ? item.accZ : item.gyZ);
-            });
-        }
+        let date = new Date()
+            .toTimeString()
+            .replace(/.*(\d{2}:\d{2}:\d{2}).*/, '$1');
+        result.labels.push(date);
+        result.x.push(type === 'acc' ? data.accX : data.gyX);
+        result.y.push(type === 'acc' ? data.accY : data.gyY);
+        result.z.push(type === 'acc' ? data.accZ : data.gyZ);
 
         const dataConfig = {
             labels: result.labels,
@@ -130,12 +148,45 @@ const Chart = ({ type }) => {
             .finally(() => {});
     }, []);
 
+    // useEffect(() => {
+    //     let timeCallApi = setInterval(() => {
+    //         getDataChart();
+    //     }, 2000);
+    //     return () => clearInterval(timeCallApi);
+    // }, []);
+
     useEffect(() => {
-        let timeCallApi = setInterval(() => {
-            getDataChart();
-        }, 2000);
-        return () => clearInterval(timeCallApi);
+        client.on('message', async (topic, message) => {
+            let data = JSON.parse(message.toString());
+            let data_convert = convertDataChart(data);
+            setDataChart(data_convert);
+            console.log(
+                '🚀 ~ file: index.jsx ~ line 167 ~ client.on ~ data_convert',
+                data_convert
+            );
+            setIndexOfChart((prev) => prev + 1);
+        });
+
+        client.on('connect', () => {
+            console.log('Get data');
+            client.subscribe(topic);
+        });
+        return () => {
+            client.on('close', () => {
+                console.log('Disconnected');
+            });
+            result = {
+                labels: [],
+                x: [],
+                y: [],
+                z: [],
+            };
+        };
     }, []);
+
+    useEffect(() => {
+        console.log(dataChart);
+    }, [indexOfChart]);
 
     return (
         <>
