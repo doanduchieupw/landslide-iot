@@ -8,8 +8,9 @@ const InputHook = ({ control, ...props }) => {
     });
     return (
         <input
-            className="p-4 rounded-md border border-gray-300 transition-all focus:border-blue-500"
+            className='p-4 rounded-md border border-gray-300 transition-all focus:border-blue-500'
             spellCheck='false'
+            autoFocus={props.name === 'username' ? true : false}
             {...field}
             {...props}
         ></input>

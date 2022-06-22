@@ -13,6 +13,7 @@ import storage from 'redux-persist/lib/storage';
 
 import authSlice from './reducers/authSlice';
 import globalSilce from './reducers/globalSlice';
+import userSlice from './reducers/userSlice';
 
 const persistConfig = {
     key: 'root',
@@ -23,11 +24,13 @@ const persistConfig = {
 const rootReducer = combineReducers({
     global: globalSilce,
     auth: authSlice,
+    user: userSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 const store = configureStore({
+    // reducer: rootReducer,
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

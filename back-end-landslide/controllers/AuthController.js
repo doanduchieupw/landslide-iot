@@ -14,7 +14,8 @@ const authController = {
             const usernameCheck = await User.findOne({ username });
             if (usernameCheck) {
                 return res.json({
-                    message: 'This username is already taken. Please choose another name',
+                    message:
+                        'This username is already taken. Please choose another name',
                     type: 'username',
                     status: false,
                 });
@@ -70,7 +71,6 @@ const authController = {
 
     login: async (req, res) => {
         try {
-            console.log(req.body);
             const { username, password } = req.body;
             const user = await User.findOne({ username });
             const isPasswordInvalid = await bcrypt.compare(
@@ -92,8 +92,9 @@ const authController = {
             refreshTokens.push(refreshToken);
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
-                secure: false,
-                sameSite: 'strict',
+                secure: true,
+                path: '/',
+                sameSite: 'none',
             });
 
             return res.json({ status: true, ...user._doc, accessToken });
@@ -121,6 +122,7 @@ const authController = {
             res.cookie('refreshToken', newRefreshToken, {
                 httpOnly: true,
                 secure: false,
+                path: '/',
                 sameSite: 'strict',
             });
 
@@ -131,8 +133,10 @@ const authController = {
     //LOGOUT
     logout: async (req, res) => {
         res.clearCookie('refreshToken');
-        refreshTokens.filter((token) => token !== req.cookies.refreshToken);
-        res.status(200).json('Logout !!!')
+        refreshTokens = refreshTokens.filter(
+            (token) => token !== req.cookies.refreshToken
+        );
+        res.status(200).json('Logout !!!');
     },
 };
 

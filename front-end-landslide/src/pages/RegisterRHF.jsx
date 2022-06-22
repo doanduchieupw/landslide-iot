@@ -46,7 +46,7 @@ const Register = () => {
     const onSubmit = (user) => {
         if (isValid) {
             registerUser(user, dispatch, navigate).then((res) => {
-                if (res.error) {
+                if (res?.error) {
                     setError(res.type, {
                         type: 'custom',
                         message: res.message,

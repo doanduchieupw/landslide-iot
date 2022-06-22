@@ -39,13 +39,9 @@ const Login = () => {
         if (isValid) {
             const { username, password } = user;
             loginUser(user, dispatch, navigate);
-            
         }
     };
 
-    useEffect(() => {
-        setFocus('username');
-    }, [setFocus]);
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}

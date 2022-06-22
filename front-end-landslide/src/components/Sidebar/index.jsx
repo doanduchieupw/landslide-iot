@@ -12,11 +12,9 @@ import {
     faTemperatureHalf,
 } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
-import jwt_decode from 'jwt-decode';
-import { refreshTokenRoute } from '../../utils/APIRoutes';
-import { loginSuccess } from '../../redux/reducers/authSlice';
+import { logoutSuccess } from '../../redux/reducers/authSlice';
 import { logoutUser } from '../../redux/reducers/apiRequest';
+import { createAxios } from '../../createInstance';
 
 const sidebarList = [
     {
@@ -54,42 +52,13 @@ const sidebarList = [
 
 const Sidebar = () => {
     const [open, setOpen] = useState(true);
-    const user = useSelector((state) => state.auth.login.currentUser);
+    const user = useSelector((state) => state.auth?.login?.currentUser);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const id = user?._id;
     const accessToken = user?.accessToken;
 
-    let axiosJWT = axios.create();
-
-    const refreshToken = async () => {
-        try {
-            const res = await axios.post(refreshTokenRoute, {
-                withCredentials: true,
-            });
-            return res.data;
-        } catch (err) {
-            console.log(err);
-        }
-    };
-
-    axiosJWT.interceptors.request.use(
-        async (config) => {
-            let date = new Date();
-            const decodedToken = jwt_decode(user?.accessToken);
-            if (decodedToken.exp < date.getTime / 1000) {
-                const data = await refreshToken();
-                const refreshUser = {
-                    ...user,
-                    accessToken: data.accessToken,
-                };
-                dispatch(loginSuccess(refreshUser));
-                config.headers['token'] = `Bearer ${data.accessToken}`;
-            }
-            return config;
-        },
-        (err) => Promise.reject(err)
-    );
+    let axiosJWT = createAxios(user, dispatch, logoutSuccess)
 
     const handleLogout = () => {
         logoutUser(dispatch, id, navigate, accessToken, axiosJWT)

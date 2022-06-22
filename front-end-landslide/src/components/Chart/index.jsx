@@ -103,7 +103,7 @@ const Chart = ({ type }) => {
     const convertDataChart = (data) => {
         let date = new Date()
             .toTimeString()
-            .replace(/.*(\d{2}:\d{2}:\d{2}).*/, '$1');
+            .replace(/.*(\d{2}:\d{2}:\d{4}).*/, '$1');
         result.labels.push(date);
         result.x.push(type === 'acc' ? data.accX : data.gyX);
         result.y.push(type === 'acc' ? data.accY : data.gyY);
