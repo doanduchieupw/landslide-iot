@@ -52,7 +52,6 @@ const Register = () => {
                         message: res.message,
                     });
                 } else {
-                    console.log(res);
                     setIsSuccess(true);
                 }
             });

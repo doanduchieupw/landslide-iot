@@ -50,7 +50,7 @@ export const registerUser = async (user, dispatch, navigate) => {
             };
         }
         dispatch(registerSuccess());
-        navigate('/');
+        navigate('/login');
     } catch (err) {
         dispatch(registerFailed());
     }

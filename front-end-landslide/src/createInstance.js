@@ -2,8 +2,10 @@ import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import { refreshTokenRoute } from './utils/APIRoutes';
 
+axios.defaults.withCredentials = true;
 const refreshToken = async () => {
     try {
+        console.log();
         const res = await axios.post(refreshTokenRoute, {
             withCredentials: true,
         });
@@ -19,7 +21,7 @@ export const createAxios = (user, dispatch, stateSuccess) => {
         async (config) => {
             let date = new Date();
             const decodedToken = jwt_decode(user?.accessToken);
-            if (decodedToken.exp < date.getTime / 1000) {
+            if (decodedToken.exp < date.getTime() / 1000) {
                 const data = await refreshToken();
                 const refreshUser = {
                     ...user,
