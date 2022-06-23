@@ -25,7 +25,6 @@ const Routers = () => {
                     />
                 );
             })}
-            <Route path='/logout' />
         </Routes>
     );
 };
