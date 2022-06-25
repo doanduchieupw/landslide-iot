@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const mqtt = require('mqtt');
 const Sensor = require('./models/Sensor');
+const axios = require('axios');
 
 const route = require('./routes');
 
@@ -34,6 +35,21 @@ app.use(express.json());
 
 //Init router
 route(app);
+
+// app.get('/api/weather', (req, res) => {
+//     try {
+//         axios
+//             .get(
+//                 'https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=3e8b33742b8bc73a3e884e2a3980eaa4'
+//             )
+//             .then((data) => {
+//                 console.log(data);
+//                 return res.status(200).send(data.data)})
+//             .catch((err) => res.send(err));
+//     } catch (err) {
+//         console.error('GG', err);
+//     }
+// });
 
 app.listen(process.env.PORT, () => {
     console.log('Server is running at PORT: ', process.env.PORT);
