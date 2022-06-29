@@ -12,6 +12,7 @@ import {
 import storage from 'redux-persist/lib/storage';
 
 import authSlice from './reducers/authSlice';
+import contactSlice from './reducers/contactSlice';
 import globalSilce from './reducers/globalSlice';
 import userSlice from './reducers/userSlice';
 
@@ -25,6 +26,7 @@ const rootReducer = combineReducers({
     global: globalSilce,
     auth: authSlice,
     user: userSlice,
+    contact: contactSlice,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

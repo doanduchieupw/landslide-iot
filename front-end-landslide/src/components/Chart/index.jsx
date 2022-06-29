@@ -15,6 +15,7 @@ import { useSelector } from 'react-redux';
 import * as mqtt from 'mqtt';
 
 import Loading from '../../assets/loading.gif';
+import { DateTime } from 'luxon';
 
 ChartJS.register(
     CategoryScale,
@@ -39,7 +40,7 @@ const client = mqtt.connect(
     'wss://landslide.cloud.shiftr.io:443',
     brokerConfig
 );
-const topic = 'getData';
+const topic = 'acc';
 let result = {
     labels: [],
     x: [],
@@ -101,13 +102,12 @@ const Chart = ({ type }) => {
     const [dataChart, setDataChart] = useState();
 
     const convertDataChart = (data) => {
-        let date = new Date()
-            .toTimeString()
-            .replace(/.*(\d{2}:\d{2}:\d{4}).*/, '$1');
-        result.labels.push(date);
-        result.x.push(type === 'acc' ? data.accX : data.gyX);
-        result.y.push(type === 'acc' ? data.accY : data.gyY);
-        result.z.push(type === 'acc' ? data.accZ : data.gyZ);
+        let time = DateTime.local()
+        let timeLabel = `${time.c.hour}:${time.c.minute}:${time.c.second}.${time.c.millisecond}`
+        result.labels.push(timeLabel);
+        result.x.push(type === 'acc' ? data.aX : data.gyX);
+        result.y.push(type === 'acc' ? data.aY : data.gyY);
+        result.z.push(type === 'acc' ? data.aZ : data.gyZ);
 
         const dataConfig = {
             labels: result.labels,

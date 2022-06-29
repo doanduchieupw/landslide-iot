@@ -60,9 +60,9 @@ const WeatherCard = () => {
             </div>
             {/* Time */}
             <div className='text-right mr-3 mt-4'>{`${
-                time.c.hour > 10 ? time.c.hour : `0${time.c.hour}`
-            }:${time.c.minute > 10 ? time.c.minute : `0${time.c.minute}`}:${
-                time.c.second > 10 ? time.c.second : `0${time.c.second}`
+                time.c.hour >= 10 ? time.c.hour : `0${time.c.hour}`
+            }:${time.c.minute >= 10 ? time.c.minute : `0${time.c.minute}`}:${
+                time.c.second >= 10 ? time.c.second : `0${time.c.second}`
             }`}</div>
             {/* Weather temp */}
             <div className='mt-3 text-xl text-center'>{`${weatherData.name}, ${weatherData?.sys?.country}`}</div>

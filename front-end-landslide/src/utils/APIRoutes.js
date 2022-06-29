@@ -8,4 +8,5 @@ export const refreshTokenRoute = `${host}/api/auth/refresh`;
 export const allUsersRoute= `${host}/api/users/allUser`;
 //[SENSOR]
 export const getData = `${host}/api/sensor/data`;
-
+//[CONTACT]
+export const userContact = () =>  `${host}/api/sensor/data`;

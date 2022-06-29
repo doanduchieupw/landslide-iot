@@ -17,6 +17,7 @@ import {
     registerStart,
     registerSuccess,
 } from './authSlice';
+import { getUserContactFailed, getUserContactStart, getUserContactSuccess } from './contactSlice';
 import {
     deleteUserFailed,
     deleteUserStart,
@@ -90,5 +91,16 @@ export const deleteUser = async (accessToken, dispatch, id, axiosJWT) => {
         dispatch(deleteUserSuccess(res.data));
     } catch (err) {
         dispatch(deleteUserFailed(err.response?.data));
+    }
+};
+export const getContact = async (accessToken, dispatch, id, axiosJWT) => {
+    dispatch(getUserContactStart());
+    try {
+        const res = await axiosJWT.get(`${host}/api/contact/${id}`, {
+            headers: { token: `Bearer ${accessToken}` },
+        });
+        dispatch(getUserContactSuccess(res.data));
+    } catch (err) {
+        dispatch(getUserContactFailed(err.response?.data));
     }
 };

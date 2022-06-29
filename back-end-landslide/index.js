@@ -4,8 +4,10 @@ const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const mqtt = require('mqtt');
-const Sensor = require('./models/Sensor');
-const axios = require('axios');
+const Accel = require('./models/Accel');
+const Gyro = require('./models/Gyro');
+const Temp = require('./models/Temp');
+const Rain = require('./models/Rain');
 
 const route = require('./routes');
 
@@ -36,53 +38,53 @@ app.use(express.json());
 //Init router
 route(app);
 
-// app.get('/api/weather', (req, res) => {
-//     try {
-//         axios
-//             .get(
-//                 'https://api.openweathermap.org/data/2.5/weather?q=hanoi&appid=3e8b33742b8bc73a3e884e2a3980eaa4'
-//             )
-//             .then((data) => {
-//                 console.log(data);
-//                 return res.status(200).send(data.data)})
-//             .catch((err) => res.send(err));
-//     } catch (err) {
-//         console.error('GG', err);
-//     }
-// });
-
 app.listen(process.env.PORT, () => {
     console.log('Server is running at PORT: ', process.env.PORT);
 });
 
 //Broker config
 const brokerConfig = {
-    clientId: 'hieu-sub',
+    clientId: 'landslide-backend-mongoDB',
     username: process.env.MQTT_USERNAME,
     password: process.env.MQTT_PASSWORD,
 };
 const client = mqtt.connect(process.env.MQTT_BROKER_URL, brokerConfig);
-const topic = 'getData';
 
 client.on('message', async (topic, message) => {
     let data = JSON.parse(message.toString());
-
-    await Sensor.create({
-        accX: data.accX,
-        accY: data.accY,
-        accZ: data.accZ,
-        gyX: data.gyX,
-        gyY: data.gyY,
-        gyZ: data.gyZ,
-        temp: data.temp,
-        humi: data.humi,
-        mois: data.mois,
-        rain: data.rain,
-    });
+    if (topic === 'accelerometer') {
+        await Accel.create({
+            accX: data.aX,
+            accY: data.aY,
+            accZ: data.aZ,
+        });
+    } 
+    if (topic === 'gyroscope') {
+        await Gyro.create({
+            gyX: data.gX,
+            gyY: data.gY,
+            gyZ: data.gZ,
+        })
+    }
+    if (topic === 'temp') {
+        await Temp.create({
+            temp: data.t,
+            humi: data.h,
+            mois: data.m,
+        })
+    }
+    if (topic === 'rain') {
+        await Rain.create({
+            rain: data.r,
+        })
+    }
     console.log(data);
 });
 
 client.on('connect', () => {
-    console.log('from sub');
-    client.subscribe(topic);
+    console.log('Connect from Back-end');
+    client.subscribe('accelerometer');
+    client.subscribe('gyroscope');
+    client.subscribe('temp');
+    client.subscribe('rain');
 });

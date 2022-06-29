@@ -19,24 +19,7 @@ const Contact = () => {
     }, []);
 
     return (
-        <div className='flex flex-col justify-center items-center w-[200px]'>
-            {userList?.map((userItem, index) => (
-                <div
-                    className='w-full py-2 mt-1 bg-gray-800 flex flex-row'
-                    key={index}
-                >
-                    <span className='text-blue-500 flex-1'>
-                        {userItem.username}
-                    </span>{' '}
-                    <button
-                        className='text-white bg-red-400 mr-2'
-                        onClick={() => handleDelete(userItem._id)}
-                    >
-                        Delete
-                    </button>
-                </div>
-            ))}
-        </div>
+        <>contact</>
     );
 };
 
