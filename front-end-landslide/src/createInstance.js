@@ -5,7 +5,7 @@ import { refreshTokenRoute } from './utils/APIRoutes';
 axios.defaults.withCredentials = true;
 const refreshToken = async () => {
     try {
-        console.log();
+        console.log('refresh');
         const res = await axios.post(refreshTokenRoute, {
             withCredentials: true,
         });
@@ -20,9 +20,11 @@ export const createAxios = (user, dispatch, stateSuccess) => {
     newInstance.interceptors.request.use(
         async (config) => {
             let date = new Date();
+            console.log('create');
             const decodedToken = jwt_decode(user?.accessToken);
             if (decodedToken.exp < date.getTime() / 1000) {
                 const data = await refreshToken();
+                console.log('inside');
                 const refreshUser = {
                     ...user,
                     accessToken: data.accessToken,

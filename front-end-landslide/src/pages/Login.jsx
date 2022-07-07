@@ -26,11 +26,13 @@ const validationSchema = Yup.object({
 });
 
 const Login = () => {
+    
+    axios.defaults.withCredentials = true;
+
     const dispatch = useDispatch();
     const navigate = useNavigate()
     const {
         handleSubmit,
-        setFocus,
         control,
         formState: { errors, isSubmitting, isValid },
     } = useForm({ resolver: yupResolver(validationSchema), mode: 'onChange' });

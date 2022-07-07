@@ -44,7 +44,7 @@ const Register = () => {
 
     const onSubmit = (user) => {
         if (isValid) {
-            registerUser(user, dispatch, navigate).then((res) => {
+            registerUser(user, dispatch).then((res) => {
                 if (res?.error) {
                     setError(res.type, {
                         type: 'custom',
@@ -52,6 +52,10 @@ const Register = () => {
                     });
                 } else {
                     setIsSuccess(true);
+                    setTimeout(() => {
+                        setIsSuccess(false);
+                        navigate('/login');
+                    }, 2500);
                 }
             });
         }

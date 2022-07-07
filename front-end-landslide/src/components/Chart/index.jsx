@@ -28,7 +28,7 @@ ChartJS.register(
 );
 
 //Option chart
-const rangeOfChart = 40;
+const rangeOfChart = 50;
 
 // MQTT config
 const brokerConfig = {
@@ -40,7 +40,7 @@ const client = mqtt.connect(
     'wss://landslide.cloud.shiftr.io:443',
     brokerConfig
 );
-const topic = 'acc';
+const topic = 'accelerometer';
 let result = {
     labels: [],
     x: [],
@@ -56,6 +56,11 @@ const Chart = ({ type }) => {
     const options = {
         animation: false,
         responsive: true,
+        elements: {
+            line: {
+                borderWidth: 2,
+            }
+        },
         plugins: {
             legend: {
                 position: 'top',
@@ -100,15 +105,18 @@ const Chart = ({ type }) => {
     };
 
     const [dataChart, setDataChart] = useState();
+    
 
     const convertDataChart = (data) => {
         let time = DateTime.local()
         let timeLabel = `${time.c.hour}:${time.c.minute}:${time.c.second}.${time.c.millisecond}`
+        
         result.labels.push(timeLabel);
-        result.x.push(type === 'acc' ? data.aX : data.gyX);
-        result.y.push(type === 'acc' ? data.aY : data.gyY);
-        result.z.push(type === 'acc' ? data.aZ : data.gyZ);
-
+        result.x.push(type === 'acc' ? data.aX : data.gX);
+        result.y.push(type === 'acc' ? data.aY : data.gY);
+        result.z.push(type === 'acc' ? data.aZ : data.gZ);
+        
+        
         const dataConfig = {
             labels: result.labels,
             datasets: [
@@ -159,11 +167,9 @@ const Chart = ({ type }) => {
         client.on('message', async (topic, message) => {
             let data = JSON.parse(message.toString());
             let data_convert = convertDataChart(data);
+
+            
             setDataChart(data_convert);
-            console.log(
-                '🚀 ~ file: index.jsx ~ line 167 ~ client.on ~ data_convert',
-                data_convert
-            );
             setIndexOfChart((prev) => prev + 1);
         });
 
@@ -185,8 +191,9 @@ const Chart = ({ type }) => {
     }, []);
 
     useEffect(() => {
-        console.log(dataChart);
+        console.log('length', result.x.length);
     }, [indexOfChart]);
+
 
     return (
         <>

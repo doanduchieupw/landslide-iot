@@ -22,9 +22,9 @@ client.on('connect', () => {
 
     setInterval(() => {
         let accelFakeData = {
-            accX: getFakeData(),
-            accY: getFakeData(),
-            accZ: getFakeData(),
+            aX: getFakeData(),
+            aY: getFakeData(),
+            aZ: getFakeData(),
         }
         let accelMess = JSON.stringify(accelFakeData);
         client.publish('accelerometer', accelMess);
@@ -34,9 +34,9 @@ client.on('connect', () => {
 
     setInterval(() => {
         let gyroFakeData = { 
-            gyX: getFakeData(),
-            gyY: getFakeData(),
-            gyZ: getFakeData(),
+            gX: getFakeData(),
+            gY: getFakeData(),
+            gZ: getFakeData(),
         }
         let gyroMess = JSON.stringify(gyroFakeData);
         client.publish('gyroscope', gyroMess);
@@ -45,9 +45,9 @@ client.on('connect', () => {
 
     setInterval(() => {
         let tempFakeData = {
-            temp: getFakeData(),
-            humi: getFakeData(),
-            mois: getFakeData(),
+            t: getFakeData(),
+            h: getFakeData(),
+            m: getFakeData(),
         }
         let tempMess = JSON.stringify(tempFakeData);
         client.publish('temp', tempMess);
@@ -56,7 +56,7 @@ client.on('connect', () => {
 
     setInterval(() => {
         let rainFakeData = {
-            rain: getFakeData(),
+            r: getFakeData(),
         }
         let rainMess = JSON.stringify(rainFakeData);
         client.publish('rain', rainMess);

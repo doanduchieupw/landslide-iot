@@ -17,7 +17,11 @@ import {
     registerStart,
     registerSuccess,
 } from './authSlice';
-import { getUserContactFailed, getUserContactStart, getUserContactSuccess } from './contactSlice';
+import {
+    getUserContactFailed,
+    getUserContactStart,
+    getUserContactSuccess,
+} from './contactSlice';
 import {
     deleteUserFailed,
     deleteUserStart,
@@ -27,19 +31,26 @@ import {
     getUsersSuccess,
 } from './userSlice';
 
-axios.defaults.withCredentials = true;
 
 export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
     try {
-        const res = await axios.post(loginRoute, user);
+        const res = await axios.post(loginRoute, user,
+            // {
+            // withCredentials: true,
+        //     headers: {
+        //         'Access-Control-Allow-Origin': '*',
+        //         'Content-Type': 'application/json',
+        //     },
+        // }
+        );
         dispatch(loginSuccess(res.data));
         navigate('/');
     } catch (err) {
         dispatch(loginFailed());
     }
 };
-export const registerUser = async (user, dispatch, navigate) => {
+export const registerUser = async (user, dispatch) => {
     dispatch(registerStart());
     try {
         const { data } = await axios.post(registerRoute, user);
@@ -51,7 +62,6 @@ export const registerUser = async (user, dispatch, navigate) => {
             };
         }
         dispatch(registerSuccess());
-        navigate('/login');
     } catch (err) {
         dispatch(registerFailed());
     }
@@ -61,7 +71,7 @@ export const logoutUser = async (dispatch, id, navigate, token, axiosJWT) => {
     dispatch(logoutStart());
     try {
         await axiosJWT.post(logoutRoute, id, {
-            headers: { token: `Bearer ${token}`}
+            headers: { token: `Bearer ${token}` },
         });
         dispatch(logoutSuccess());
         navigate('/login');

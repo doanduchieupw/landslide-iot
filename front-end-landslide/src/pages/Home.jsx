@@ -32,7 +32,7 @@ const Home = () => {
                 setTemp([data.t, data.h, data.m]);
             }
             if (topic === 'rain') {
-                setRain([data.rain]);
+                setRain([data.r]);
             }
         });
 
@@ -55,7 +55,7 @@ const Home = () => {
             <Card type='gyro' value={gyro} />
             <Card type='temp' value={temp} />
             <Card type='rain' value={rain} />
-            <WeatherCard />
+            {/* <WeatherCard /> */}
         </div>
     );
 };
