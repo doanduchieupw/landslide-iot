@@ -105,11 +105,8 @@ const authController = {
             delete user._doc.password;
 
             const accessToken = authController.generateAccessToken(user);
-            console.log("🚀 ~ file: AuthController.js ~ line 108 ~ login: ~ accessToken", accessToken)
             const refreshToken = authController.generateRefreshToken(user);
-            console.log("🚀 ~ file: AuthController.js ~ line 110 ~ login: ~ refreshToken", refreshToken)
             refreshTokens.push(refreshToken);
-            console.log("🚀 ~ file: AuthController.js ~ line 112 ~ login: ~ refreshTokens", refreshTokens)
             res.cookie('refreshToken', refreshToken, {
                 httpOnly: true,
                 secure: false,
@@ -128,10 +125,8 @@ const authController = {
     refreshToken: async (req, res) => {
         //take refresh token from username
         const refreshToken = req.cookies.refreshToken;
-        console.log("🚀 ~ file: AuthController.js ~ line 127 ~ refreshToken: ~ refreshToken", refreshToken)
         if (!refreshToken)
             return res.status(401).json("You're not authenticated");
-            console.log("🚀 ~ file: AuthController.js ~ line 132 ~ refreshToken: ~ refreshTokens", refreshTokens)
         if (!refreshTokens.includes(refreshToken))
             return res.status(403).json('Refresh token is not valid');
         jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (err, user) => {
