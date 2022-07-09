@@ -8,5 +8,7 @@ export const refreshTokenRoute = `${host}/api/auth/refresh`;
 export const allUsersRoute= `${host}/api/users/allUser`;
 //[SENSOR]
 export const getData = `${host}/api/sensor/data`;
+export const getRainDataByDay = `${host}/api/rain/data-by-day`;
+export const getRainDataByMonth = `${host}/api/rain/data-by-month`;
 //[CONTACT]
 export const userContact = (userId) =>  `${host}/api/contact/`;

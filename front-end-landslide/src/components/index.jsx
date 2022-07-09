@@ -1,4 +1,5 @@
 export { default as Chart } from './Chart';
+export { default as BarChart } from './Chart/BarChart';
 export { default as InputHook } from './Input/InputRHF';
 export { default as RadioHook } from './Radio/RadioHook';
 export { default as Layout } from './Layout';

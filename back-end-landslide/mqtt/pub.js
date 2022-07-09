@@ -61,6 +61,6 @@ client.on('connect', () => {
         let rainMess = JSON.stringify(rainFakeData);
         client.publish('rain', rainMess);
         console.log('Message sent!: ', rainMess);
-    },10000);
+    },3000);
 
 });
