@@ -75,17 +75,46 @@ const RainController = {
                 {
                     $group: {
                         _id: { $month: '$data.createdAt' },
-                        data: { $avg: '$$' },
+                        data: { $avg: '$data.rain' },
                     },
                 },
                 { $sort: { _id: 1 } },
             ]);
-
             return res.status(200).json(rainData);
         } catch (err) {
             return res.status(500).json({ err });
         }
-    }
+    },
+    getDataByRange: async (req, res) => {
+        const { startDay, endDay } = req.params;
+        
+            try {
+                const rainData = await Rain.aggregate([
+                    {
+                        $match: {
+                            createdAt: {
+                                $gte: moment(startDay).toDate(),
+                                $lte: moment(endDay).toDate(),
+                            },
+                        },
+                    },
+                    {
+                        $group: {
+                            _id: { $substr: ['$createdAt', 0, 10] },
+                            data: { $last: '$$ROOT' },
+                        },
+                    },
+                    { $sort: { _id: 1 } },
+                ]);
+                console.log("start", moment(startDay).toDate());
+                console.log("end", moment(endDay).toDate())
+
+                return res.status(200).json(rainData);
+            } catch (err) {
+                return res.status(500).json({ err });
+            }
+        
+    },
 };
 
 module.exports = RainController;

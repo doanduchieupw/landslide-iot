@@ -10,5 +10,6 @@ export const allUsersRoute= `${host}/api/users/allUser`;
 export const getData = `${host}/api/sensor/data`;
 export const getRainDataByDay = `${host}/api/rain/data-by-day`;
 export const getRainDataByMonth = `${host}/api/rain/data-by-month`;
+export const getRainDataByYear = `${host}/api/rain/data-by-year`;
 //[CONTACT]
 export const userContact = (userId) =>  `${host}/api/contact/`;
