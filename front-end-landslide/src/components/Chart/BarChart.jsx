@@ -70,8 +70,12 @@ const BarChart = () => {
             .finally(() => {});
     }, [rangeBarChart]);
     return <>
-    <button onClick={() => setRangeBarChart('day')}>Day</button>
-    <button onClick={() => setRangeBarChart('month')}>Month</button>
+    <div className="flex justify-end gap-x-2 text-md text-royal-blue">
+        <button className="hover:opacity-50 border-r border-gray-500 pr-2" onClick={() => setRangeBarChart('day')}>Day</button>
+
+        <button className="hover:opacity-50 border-r border-gray-500 pr-2" onClick={() => setRangeBarChart('month')}>Month</button>
+        <button className="hover:opacity-50" onClick={() => setRangeBarChart('month')}>Year</button>
+    </div>
     {barChartData && <Bar options={options} data={barChartData} />}
     </>;
 };
