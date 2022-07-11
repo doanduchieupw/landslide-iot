@@ -5,3 +5,4 @@ export { default as Rain } from './Rain';
 export { default as Login } from './Login';
 export { default as Register } from './RegisterRHF';
 export { default as Contact } from './Contact';
+export { default as Faqs } from './Faqs';
