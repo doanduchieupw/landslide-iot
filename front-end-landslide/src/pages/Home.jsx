@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { Card, WeatherCard } from '../components';
+import { Card, Humi, Mois, WeatherCard } from '../components';
 import * as mqtt from 'mqtt';
-const data = [12, 13, 14];
 // MQTT config
 const brokerConfig = {
     clientId: 'hieu-graph',
@@ -12,7 +11,6 @@ const client = mqtt.connect(
     'wss://landslide.cloud.shiftr.io:443',
     brokerConfig
 );
-const topic = 'acc';
 
 const Home = () => {
     const [acc, setAcc] = useState([0, 0, 0]);
@@ -50,11 +48,18 @@ const Home = () => {
         };
     }, []);
     return (
-        <div className='w-full flex justify-around gap-x-5 flex-wrap mt-3'>
-            <Card type='acc' value={acc} />
-            <Card type='gyro' value={gyro} />
-            <Card type='temp' value={temp} />
-            <Card type='rain' value={rain} />
+        <div className='w-full flex flex-col'>
+            <div className='w-full h-[100px] -mt-4 -mr-4 flex justify-end'>
+                <Humi value={temp} />
+                <Mois value={temp} />
+            </div>
+            <div className='w-full flex justify-around gap-x-5 flex-wrap mt-3'>
+                <Card type='acc' value={acc} />
+                <Card type='gyro' value={gyro} />
+                <Card type='temp' value={temp} />
+                <Card type='rain' value={rain} />
+            </div>
+
             {/* <WeatherCard /> */}
         </div>
     );

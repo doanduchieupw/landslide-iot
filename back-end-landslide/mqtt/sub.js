@@ -1,25 +1,4 @@
 const mqtt = require('mqtt');
-const cors = require('cors');
-const dotenv = require('dotenv');
-const mongoose = require('mongoose');
-
-const Sensor = require('../models/Sensor');
-
-//using dotenv
-dotenv.config();
-
-//Connect to database
-mongoose
-    .connect(process.env.MONGODB_URL, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
-    .then(() => {
-        console.log('DB Connection Successfull');
-    })
-    .catch((err) => {
-        console.log(err.message);
-    });
 
 //Broker config
 const brokerConfig = {
@@ -28,25 +7,13 @@ const brokerConfig = {
     password: 'oYPSNMspLlNXX5o8',
 }
 const client = mqtt.connect('mqtt://landslide.cloud.shiftr.io:1883', brokerConfig)
-const topic = 'getData';
+const topic = 'a';
 
 
 client.on('message', async (topic, message) => {
-    let data = JSON.parse(message.toString())
+    // let data = JSON.parse(message.toString())
 
-    // let data = parseFloat(message);
-    await Sensor.create({
-        accX: data.accX,
-        accY: data.accY,
-        accZ: data.accZ,
-        gyX: data.gyX,
-        gyY: data.gyY,
-        gyZ: data.gyZ,
-        temp: data.temp,
-        humi: data.humi,
-        mois: data.mois,
-        rain: data.rain,
-    })
+    
     console.log(data);
 })
 

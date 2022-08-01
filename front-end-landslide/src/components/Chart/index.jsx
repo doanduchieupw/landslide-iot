@@ -125,18 +125,21 @@ const Chart = ({ type }) => {
                     data: result.x,
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                    lineTension: 0.2,
                 },
                 {
                     label: type === 'acc' ? 'accY' : 'gyY',
                     data: result.y,
                     borderColor: 'rgb(53, 162, 235)',
                     backgroundColor: 'rgba(53, 162, 235, 0.5)',
+                    lineTension: 0.2,
                 },
                 {
                     label: type === 'acc' ? 'accZ' : 'gyZ',
                     data: result.z,
                     borderColor: 'rgb(31, 196, 80)',
                     backgroundColor: 'rgba(33, 168, 51, 0.5)',
+                    lineTension: 0.2,
                 },
             ],
         };

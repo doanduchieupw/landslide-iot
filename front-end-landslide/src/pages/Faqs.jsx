@@ -18,7 +18,7 @@ const Faqs = () => {
         {
             question:
                 'Cần phải làm gì ?',
-            answer: `   - Theo dõi thông tin cảnh báo lũ quét, sạt lở đất. Thông báo cho chính quyền và những người xung quanh khi có dấu hiệu
+            answer: `   - Theo dõi thông tin cảnh báo lũ quét, sạt lở đất. Thông báo cho chính quyền và những người xung quanh khi có dấu hiệu 
                         - Sẵn sàng sơ tán theo hướng dẫn của chính quyền địa phương.
                         - Chạy nhanh ra khỏi nơi nguy hiểm khi nghe hoặc nhận thấy tiếng động lớn hoặc dấu hiệu không bình thường
             `,
