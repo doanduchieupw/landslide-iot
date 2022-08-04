@@ -20,9 +20,10 @@ const TempController = {
                         temp: { $avg: '$temp' },
                         humi: { $avg: '$humi' },
                         mois: { $avg: '$mois' },
+                        firstDocument: { $first: '$$ROOT' },
                     },
                 },
-                { $sort: { _id: 1 } },
+                { $sort: { "firstDocument.createdAt": 1 } },
             ]);
 
             return res.status(200).json(tempData);
@@ -108,7 +109,7 @@ const TempController = {
                         data: { $last: '$$ROOT' },
                     },
                 },
-                { $sort: { _id: 1 } },
+                { $sort: { "data.createdAt": 1 } },
             ]);
             console.log('start', moment(startDay).toDate());
             console.log('end', moment(endDay).toDate());

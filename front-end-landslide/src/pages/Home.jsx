@@ -59,7 +59,6 @@ const Home = () => {
                 <Card type='temp' value={temp} />
                 <Card type='rain' value={rain} />
             </div>
-
             {/* <WeatherCard /> */}
         </div>
     );

@@ -52,31 +52,31 @@ const Card = ({ type, value }) => {
                         <p>
                             {`X: ${value[0]}`}{' '}
                             {type === 'acc' ? (
-                                <span>
-                                    m/s<sup>2</sup>
-                                </span>
+                                <span>g</span>
                             ) : (
-                                <span>rad</span>
+                                <span>
+                                    <sup>o</sup>/s
+                                </span>
                             )}
                         </p>
                         <p>
                             {`Y: ${value[1]}`}{' '}
                             {type === 'acc' ? (
-                                <span>
-                                    m/s<sup>2</sup>
-                                </span>
+                                <span>g</span>
                             ) : (
-                                <span>rad</span>
+                                <span>
+                                    <sup>o</sup>/s
+                                </span>
                             )}
                         </p>
                         <p>
                             {`Z: ${value[2]}`}{' '}
                             {type === 'acc' ? (
-                                <span>
-                                    m/s<sup>2</sup>
-                                </span>
+                                <span>g</span>
                             ) : (
-                                <span>rad</span>
+                                <span>
+                                    <sup>o</sup>/s
+                                </span>
                             )}
                         </p>
                     </div>

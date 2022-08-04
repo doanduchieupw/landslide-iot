@@ -21,7 +21,7 @@ const RainController = {
                         data: { $first: '$$ROOT' },
                     },
                 },
-                { $sort: { _id: 1 } },
+                { $sort: { "data.createdAt": 1 } },
             ]);
 
             return res.status(200).json(rainData);
