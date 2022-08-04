@@ -3,7 +3,7 @@ const Accel = require('../models/Accel');
 const AccelController = {
     getData: async(req, res) => {
         try {
-            const accelData = await Accel.find().sort({ _id: -1}).limit(10);
+            const accelData = await Accel.find().sort({ _id: -1}).limit(3000);
             
             return res.status(200).json(accelData.reverse());
         } catch (err) {

@@ -10,3 +10,4 @@ export { default as Card } from './Card/ParaCard';
 export { default as WeatherCard } from './Card/WeatherCard';
 export { default as Humi } from './Gauge/Humi';
 export { default as Mois } from './Gauge/Mois';
+export { default as AccelChart } from './Chart/AccelChart';
