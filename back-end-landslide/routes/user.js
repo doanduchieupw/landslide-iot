@@ -9,6 +9,11 @@ router.get(
     middleController.verifyToken,
     userController.getAllUsers
 );
+router.get(
+    '/:userId',
+    userController.getUser
+);
+
 
 // [DELETE]
 router.delete('/:id',middleController.verifyTokenAndAdminAuth ,userController.deleteUser)

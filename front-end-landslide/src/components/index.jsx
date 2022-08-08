@@ -11,3 +11,5 @@ export { default as WeatherCard } from './Card/WeatherCard';
 export { default as Humi } from './Gauge/Humi';
 export { default as Mois } from './Gauge/Mois';
 export { default as AccelChart } from './Chart/AccelChart';
+export { default as Conversation } from './Conversation';
+export { default as ChatBox } from './ChatBox';

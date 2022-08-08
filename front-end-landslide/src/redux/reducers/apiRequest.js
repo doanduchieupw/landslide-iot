@@ -44,10 +44,16 @@ export const loginUser = async (user, dispatch, navigate) => {
         //     },
         // }
         );
+        // if(dis)
         dispatch(loginSuccess(res.data));
         navigate('/');
     } catch (err) {
         dispatch(loginFailed());
+        return {
+            error: true,
+            type: err.response.data.type,
+            message: err.response.data.message,
+        }
     }
 };
 export const registerUser = async (user, dispatch) => {

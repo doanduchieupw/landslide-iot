@@ -6,7 +6,7 @@ router.post('/', contactController.createContact);
 router.post('/mess', contactController.addMessage);
 router.get('/:userId', contactController.userContact);
 router.get('/find/:firstId/:secondId', contactController.findContact);
-router.get('/:chatId', contactController.getMessages)
+router.get('/getMessage/:chatId', contactController.getMessages)
 
 
 module.exports = router;

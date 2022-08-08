@@ -34,13 +34,19 @@ const Login = () => {
     const {
         handleSubmit,
         control,
+        setError,
         formState: { errors, isSubmitting, isValid },
     } = useForm({ resolver: yupResolver(validationSchema), mode: 'onChange' });
 
     const onSubmit =  (user) => {
         if (isValid) {
             const { username, password } = user;
-            loginUser(user, dispatch, navigate);
+            loginUser(user, dispatch, navigate).then(res => {
+                if(res) {
+                    setError('username', { type: res.type, message: res.message });
+                    setError('password', { type: res.type, message: res.message });
+                }
+            });
         }
     };
 

@@ -130,10 +130,6 @@ const TempHumiChart = () => {
         ],
     });
     const convertBarChartData = (data) => {
-        console.log(
-            '🚀 ~ file: TempChart.jsx ~ line 20 ~ convertBarChartData ~ data',
-            data
-        );
         let temp = data?.map((item) => {
             return {
                 time: moment(item?.firstDocument.createdAt)
@@ -142,19 +138,30 @@ const TempHumiChart = () => {
                 value: item?.temp,
             };
         });
-        console.log("🚀 ~ file: TempChart.jsx ~ line 145 ~ temp ~ temp", temp)
 
-        let humi = data?.map((item) => {
-            return {
-                time: moment(item?.firstDocument.createdAt)
-                    .local()
-                    .format('HH'),
-                valueHumi: item?.humi,
-                name: 'humi',
-            };
+        let humiAndMois = data?.map((item) => {
+            return [
+                {
+                    time: moment(item?.firstDocument.createdAt)
+                        .local()
+                        .format('HH'),
+                    valueHumi: item?.humi,
+                    name: 'humi',
+                },
+                {
+                    time: moment(item?.firstDocument.createdAt)
+                        .local()
+                        .format('HH'),
+                    valueHumi: item?.mois,
+                    name: 'mois',
+                },
+            ];
         });
+
+        let newHumiAndMois = humiAndMois.flat();
+
         setConfig({
-            data: [temp, humi],
+            data: [temp, newHumiAndMois],
             xField: 'time',
             yField: ['value', 'valueHumi'],
             meta: {

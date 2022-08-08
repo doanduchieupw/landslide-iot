@@ -85,7 +85,7 @@ const authController = {
             const user = await User.findOne({ username });
             
             if (!user) {
-                return res.json({
+                return res.status(404).json({
                     message: 'Username or password are wrong!',
                     type: 'username',
                     status: false,
@@ -96,7 +96,7 @@ const authController = {
                 user.password
             );
             if(!isPasswordInvalid) {
-                return res.json({
+                return res.status(404).json({
                     message: 'Username or password are wrong!',
                     type: 'username',
                     status: false,

@@ -13,6 +13,8 @@ import { Line } from 'react-chartjs-2';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import * as mqtt from 'mqtt';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Loading from '../../assets/loading.gif';
 import { DateTime } from 'luxon';
@@ -40,7 +42,7 @@ const client = mqtt.connect(
     'wss://landslide.cloud.shiftr.io:443',
     brokerConfig
 );
-const topic = 'accelerometer';
+
 let result = {
     labels: [],
     x: [],
@@ -59,7 +61,7 @@ const Chart = ({ type }) => {
         elements: {
             line: {
                 borderWidth: 2,
-            }
+            },
         },
         plugins: {
             legend: {
@@ -105,18 +107,16 @@ const Chart = ({ type }) => {
     };
 
     const [dataChart, setDataChart] = useState();
-    
 
     const convertDataChart = (data) => {
-        let time = DateTime.local()
-        let timeLabel = `${time.c.hour}:${time.c.minute}:${time.c.second}.${time.c.millisecond}`
-        
+        let time = DateTime.local();
+        let timeLabel = `${time.c.hour}:${time.c.minute}:${time.c.second}.${time.c.millisecond}`;
+
         result.labels.push(timeLabel);
         result.x.push(type === 'acc' ? data.aX : data.gX);
         result.y.push(type === 'acc' ? data.aY : data.gY);
         result.z.push(type === 'acc' ? data.aZ : data.gZ);
-        
-        
+
         const dataConfig = {
             labels: result.labels,
             datasets: [
@@ -169,21 +169,35 @@ const Chart = ({ type }) => {
     useEffect(() => {
         client.on('message', async (topic, message) => {
             let data = JSON.parse(message.toString());
-            let data_convert = convertDataChart(data);
+            console.log(
+                '🚀 ~ file: index.jsx ~ line 170 ~ client.on ~ data',
+                data
+            );
+            if (topic === 'warning') {
+                toast.warn(data?.message, {
+                    position: 'bottom-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+            }
+            if (topic === 'accelerometer') {
+                let data_convert = convertDataChart(data);
 
-            
-            setDataChart(data_convert);
-            setIndexOfChart((prev) => prev + 1);
+                setDataChart(data_convert);
+                setIndexOfChart((prev) => prev + 1);
+            }
         });
 
         client.on('connect', () => {
-            console.log('Get data');
-            client.subscribe(topic);
+            client.subscribe('accelerometer');
+            client.subscribe('warning');
         });
         return () => {
-            client.on('close', () => {
-                console.log('Disconnected');
-            });
+            client.on('close', () => {});
             result = {
                 labels: [],
                 x: [],
@@ -193,11 +207,6 @@ const Chart = ({ type }) => {
         };
     }, []);
 
-    useEffect(() => {
-        console.log('length', result.x.length);
-    }, [indexOfChart]);
-
-
     return (
         <>
             {!dataChart && (
@@ -206,6 +215,7 @@ const Chart = ({ type }) => {
                 </div>
             )}
             {dataChart && <Line options={options} data={dataChart} />}
+            <ToastContainer />
         </>
     );
 };

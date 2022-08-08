@@ -7,7 +7,7 @@ const Layout = ({ children }) => {
             <Sidebar />
             <div className='relative p-7 dark:bg-black-theme flex-1 h-screen w-full gap-x-12'>
                 {children}
-                <div className='absolute bottom-3 right-3'>
+                <div className='absolute top-1 right-1'>
                     <DarkMode />
                 </div>
             </div>
