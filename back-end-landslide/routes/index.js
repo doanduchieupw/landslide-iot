@@ -4,6 +4,7 @@ const accelRouter = require('./accel');
 const rainRouter = require('./rain');
 const tempRouter = require('./temp');
 const contactRouter = require('./contact');
+const alertRouter = require('./alert');
 
 
 const route = (app) => {
@@ -13,6 +14,7 @@ const route = (app) => {
     app.use('/api/rain', rainRouter);
     app.use('/api/temp', tempRouter);
     app.use('/api/contact', contactRouter);
+    app.use('/api/alert', alertRouter);
 }
 
 module.exports = route;

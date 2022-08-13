@@ -1,9 +1,10 @@
-import { BarChart } from "../components";
+import { BarChart, FormContact } from "../components";
 
 const Rain = () => {
     return <div className="w-full">
             <div style={{ maxWidth: '1100px' }} className="mx-auto">
-                <BarChart />
+                {/* <BarChart /> */}
+                <FormContact />
             </div>
         </div>
 }

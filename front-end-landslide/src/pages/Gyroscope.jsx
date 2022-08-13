@@ -1,8 +1,8 @@
-import { AccelChart } from "../components";
+import { WarningTable } from "../components";
 
 const Gyroscope = () => {
     return <div className='w-[75vw]'>
-        <AccelChart />
+        <WarningTable />
     </div>
 }
  

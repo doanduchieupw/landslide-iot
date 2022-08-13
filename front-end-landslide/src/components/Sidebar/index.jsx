@@ -10,6 +10,7 @@ import {
     faRightFromBracket,
     faRightToBracket,
     faTemperatureHalf,
+    faTriangleExclamation,
 } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutSuccess } from '../../redux/reducers/authSlice';
@@ -23,11 +24,6 @@ const sidebarList = [
         icon: <FontAwesomeIcon icon={faChartLine} />,
     },
     {
-        title: 'Gyroscope',
-        to: '/gyroscope',
-        icon: <FontAwesomeIcon icon={faMicroscope} />,
-    },
-    {
         title: 'Temp & Humi',
         to: '/temp-humi-mois',
         icon: <FontAwesomeIcon icon={faTemperatureHalf} />,
@@ -36,6 +32,11 @@ const sidebarList = [
         title: 'Rain',
         to: '/rain',
         icon: <FontAwesomeIcon icon={faCloudRain} />,
+    },
+    {
+        title: 'Alert',
+        to: '/alert',
+        icon: <FontAwesomeIcon icon={faTriangleExclamation} />,
     },
     {
         title: 'FAQS',

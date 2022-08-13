@@ -21,3 +21,5 @@ export const createContact = `${host}/api/contact/`;
 export const userContact = (userId) =>  `${host}/api/contact/${userId}`;
 export const getMessages = (chatId) =>  `${host}/api/contact/getMessage/${chatId}`;
 export const addMessage = `${host}/api/contact/mess`;
+//[CONTACT]
+export const alertData = `${host}/api/alert/data`;

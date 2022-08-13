@@ -8,6 +8,7 @@ const Accel = require('./models/Accel');
 const Gyro = require('./models/Gyro');
 const Temp = require('./models/Temp');
 const Rain = require('./models/Rain');
+const Alert = require('./models/Alert');
 const moment = require('moment');
 const io = require('socket.io')(8080, {
     cors: {
@@ -55,7 +56,12 @@ const brokerConfig = {
     password: process.env.MQTT_PASSWORD,
 };
 const client = mqtt.connect(process.env.MQTT_BROKER_URL, brokerConfig);
-let warnFlag = false;
+let vibrationWarnFlag = false;
+let rainWarnFlag = false;
+let moisWarnFlag = false;
+
+let rainDup = false;
+let tempDup = false;
 
 client.on('message', async (topic, message) => {
     let data = JSON.parse(message.toString());
@@ -73,18 +79,24 @@ client.on('message', async (topic, message) => {
                 parseFloat(data?.aX) > 0.05 ||
                 parseFloat(data?.aY) < -0.05 ||
                 parseFloat(data?.aY) > 0.05) &&
-            !warnFlag
+            !vibrationWarnFlag
         ) {
             let warnMess = {
-                type: 'acc',
-                message: 'Phat hien rung dong',
+                type: 'vibration',
+                message: 'Phat hien rung chan',
+                data: {
+                    accX: parseFloat(data.aX),
+                    accY: parseFloat(data.aY),
+                    accZ: parseFloat(data.aZ),
+                },
                 date: moment.utc().format(),
             };
 
+            await Alert.create(warnMess);
             client.publish('warning', JSON.stringify(warnMess));
-            warnFlag = true;
+            vibrationWarnFlag = true;
             setTimeout(() => {
-                warnFlag = false;
+                vibrationWarnFlag = false;
             }, 20000);
         }
     }
@@ -95,17 +107,60 @@ client.on('message', async (topic, message) => {
             gyZ: data.gZ,
         });
     }
-    if (topic === 'temp') {
+    console.log(topic,topic === 'temp' && !tempDup, tempDup);
+    if (topic === 'temp' && !tempDup) {
+        tempDup = true;
+        setTimeout(() => tempDup = false, 5000)
+        console.log('-----------------------------------');
         await Temp.create({
             temp: data.t,
             humi: data.h,
             mois: data.m,
         });
+        if (parseFloat(data?.m) >= 80 && !moisWarnFlag) {
+            let warnMess = {
+                type: 'mois',
+                message: 'Phat hien do am dat cao',
+                data: {
+                    temp: parseFloat(data.t),
+                    humi: parseFloat(data.h),
+                    mois: parseFloat(data.m),
+                },
+                date: moment.utc().format(),
+            };
+
+            await Alert.create(warnMess);
+            client.publish('warning', JSON.stringify(warnMess));
+            moisWarnFlag = true;
+            setTimeout(() => {
+                moisWarnFlag = false;
+            }, 30 * 60000);
+        }
     }
-    if (topic === 'rain') {
+    if (topic === 'rain' && !rainDup) {
+        rainDup = true;
+        setTimeout(() => rainDup = false, 5000) 
         await Rain.create({
             rain: data.r,
         });
+        console.log('****************************');
+        if (parseFloat(data?.r) >= 50 && !rainWarnFlag) {
+            let warnMess = {
+                type: 'rain',
+                message: 'Canh bao luong mua lon',
+                data: {
+                    rain: parseFloat(data?.r),
+                },
+                date: moment.utc().format(),
+            };
+
+            await Alert.create(warnMess);
+            client.publish('warning', JSON.stringify(warnMess));
+            rainWarnFlag = true;
+            setTimeout(() => {
+                rainWarnFlag = false;
+            }, 30 * 60000);
+        }
     }
     console.log(data);
 });
@@ -116,9 +171,6 @@ client.on('connect', () => {
     client.subscribe('gyroscope');
     client.subscribe('temp');
     client.subscribe('rain');
-    if (warnFlag === 1) {
-        client.publish('warning', 'canh bao');
-    }
 });
 
 //Contact
@@ -141,8 +193,8 @@ io.on('connection', (socket) => {
         const user = activeUsers.find((user) => user.userId === receiverId);
         console.log('sending from socket ', receiverId);
         console.log('Data', data);
-        if(user) {
-            io.to(user.socketId).emit('receive-message', data)
+        if (user) {
+            io.to(user.socketId).emit('receive-message', data);
         }
     });
 

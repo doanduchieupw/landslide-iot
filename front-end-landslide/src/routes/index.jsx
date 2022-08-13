@@ -4,7 +4,7 @@ import { Home, Register, Accelerometer, Login, Gyroscope, Contact, Rain, Temp,  
 const publicRoutes = [
     { path: '/', component: Home },
     { path: '/accelerometer', component: Accelerometer },
-    { path: '/gyroscope', component: Gyroscope },
+    { path: '/alert', component: Gyroscope },
     { path: '/rain', component: Rain },
     { path: '/temp-humi-mois', component: Temp },
     { path: '/register', component: Register, layout: 'none'},
