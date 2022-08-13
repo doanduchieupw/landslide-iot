@@ -107,11 +107,9 @@ client.on('message', async (topic, message) => {
             gyZ: data.gZ,
         });
     }
-    console.log(topic,topic === 'temp' && !tempDup, tempDup);
     if (topic === 'temp' && !tempDup) {
         tempDup = true;
         setTimeout(() => tempDup = false, 5000)
-        console.log('-----------------------------------');
         await Temp.create({
             temp: data.t,
             humi: data.h,
@@ -141,15 +139,14 @@ client.on('message', async (topic, message) => {
         rainDup = true;
         setTimeout(() => rainDup = false, 5000) 
         await Rain.create({
-            rain: data.r,
+            rain: parseFloat(data.r)*0.15,
         });
-        console.log('****************************');
         if (parseFloat(data?.r) >= 50 && !rainWarnFlag) {
             let warnMess = {
                 type: 'rain',
                 message: 'Canh bao luong mua lon',
                 data: {
-                    rain: parseFloat(data?.r),
+                    rain: parseFloat(data?.r)*0.15,
                 },
                 date: moment.utc().format(),
             };

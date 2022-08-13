@@ -48,7 +48,8 @@ const TempController = {
                         _id: { $dayOfMonth: '$createdAt' },
                         temp: { $avg: '$temp' },
                         humi: { $avg: '$humi' },
-                        mois: { $avg: '$mois' },
+                        mois: { $avg: '$mois' }, 
+                        firstDocument: { $first: '$$ROOT' }
                     },
                 },
                 { $sort: { _id: 1 } },
@@ -62,7 +63,7 @@ const TempController = {
     getDataByYear: async (req, res) => {
         const today = moment().startOf('year');
         try {
-            const tempData = await Rain.aggregate([
+            const tempData = await Temp.aggregate([
                 {
                     $match: {
                         createdAt: {
@@ -73,16 +74,23 @@ const TempController = {
                 },
                 {
                     $group: {
-                        _id: { $dayOfYear: '$createdAt' },
-                        data: { $last: '$$ROOT' },
+                        _id: { $month: '$createdAt' },
+                        temp: { $avg: '$temp' },
+                        humi: { $avg: '$humi' },
+                        mois: { $avg: '$mois' },
+                        firstDocument: { $first: '$$ROOT' }
+                        
                     },
                 },
-                {
-                    $group: {
-                        _id: { $month: '$data.createdAt' },
-                        data: { $avg: '$data.rain' },
-                    },
-                },
+                // {
+                //     $group: {
+                //         _id: { $month: '$data.createdAt' },
+                //         temp: { $avg: '$data.temp' },
+                //         humi: { $avg: '$data.humi' },
+                //         mois: { $avg: '$data.mois' },
+                //         firstDocument: { $first: '$$ROOT' }
+                //     },
+                // },
                 { $sort: { _id: 1 } },
             ]);
             return res.status(200).json(tempData);
@@ -111,14 +119,20 @@ const TempController = {
                 },
                 { $sort: { "data.createdAt": 1 } },
             ]);
-            console.log('start', moment(startDay).toDate());
-            console.log('end', moment(endDay).toDate());
 
             return res.status(200).json(tempData);
         } catch (err) {
             return res.status(500).json({ err });
         }
     },
-};
+    getData: async (req, res) => {
+        try {
+            const tempData = await Temp.find().sort({ _id: -1}).limit(20);
+            return res.status(200).json(tempData.reverse());
+        } catch (err) {
+            return res.status(500).json({ err });
+        }
+    },
+}; 
 
 module.exports = TempController;

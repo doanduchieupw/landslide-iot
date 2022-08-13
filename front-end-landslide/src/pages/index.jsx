@@ -6,4 +6,5 @@ export { default as Temp } from './Temp';
 export { default as Login } from './Login';
 export { default as Register } from './RegisterRHF';
 export { default as Contact } from './Contact';
+export { default as ContactPage } from './ContactPage';
 export { default as Faqs } from './Faqs';

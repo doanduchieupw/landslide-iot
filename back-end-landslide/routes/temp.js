@@ -7,6 +7,7 @@ router.get('/data-by-day', TempController.getDataByDay);
 router.get('/data-by-month', TempController.getDataByMonth);
 router.get('/data-by-year', TempController.getDataByYear);
 router.get('/data-by-range/:startDay&:endDay', TempController.getDataByRange);
+router.get('/last-data', TempController.getData);
 
 
 module.exports = router;

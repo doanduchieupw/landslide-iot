@@ -16,6 +16,7 @@ export const getRainDataByYear = `${host}/api/rain/data-by-year`;
 export const getTempDataByDay = `${host}/api/temp/data-by-day`;
 export const getTempDataByMonth = `${host}/api/temp/data-by-month`;
 export const getTempDataByYear = `${host}/api/temp/data-by-year`;
+export const getTempData = `${host}/api/temp/last-data`;
 //[CONTACT]
 export const createContact = `${host}/api/contact/`;
 export const userContact = (userId) =>  `${host}/api/contact/${userId}`;

@@ -5,6 +5,7 @@ import axios from 'axios';
 import moment from 'moment';
 
 import {
+    getTempData,
     getTempDataByDay,
     getTempDataByMonth,
     getTempDataByYear,
@@ -131,32 +132,112 @@ const TempHumiChart = () => {
     });
     const convertBarChartData = (data) => {
         let temp = data?.map((item) => {
-            return {
-                time: moment(item?.firstDocument.createdAt)
+            if(rangeBarChart === 'last-data') {
+                return {
+                    time: moment(item?.createdAt)
                     .local()
-                    .format('HH'),
+                    .format('hh:mm:ss'),
+                value: item?.temp,
+                }
+            }
+            if(rangeBarChart === 'month') {
+                return {
+                    time: moment(item?.firstDocument?.createdAt)
+                    .local()
+                    .format('MMM Do'),
+                value: item?.temp,
+                }
+            }
+            if(rangeBarChart === 'year') {
+                return {
+                    time: moment(item?.firstDocument?.createdAt)
+                    .local()
+                    .format('MMM'),
+                value: item?.temp,
+                }
+            }
+            return {
+                time: moment(item?.firstDocument?.createdAt)
+                    .local()
+                    .format('HH') + 'h',
                 value: item?.temp,
             };
         });
+        console.log("🚀 ~ file: TempChart.jsx ~ line 142 ~ temp ~ temp", temp)
 
         let humiAndMois = data?.map((item) => {
-            return [
+            if(rangeBarChart === 'last-data') {
+                return [
                 {
-                    time: moment(item?.firstDocument.createdAt)
+                    time: moment(item?.createdAt)
                         .local()
-                        .format('HH'),
+                        .format('hh:mm:ss'),
                     valueHumi: item?.humi,
                     name: 'humi',
                 },
                 {
-                    time: moment(item?.firstDocument.createdAt)
+                    time: moment(item?.createdAt)
                         .local()
-                        .format('HH'),
+                        .format('hh:mm:ss'),
+                    valueHumi: item?.mois,
+                    name: 'mois',
+                },
+            ]
+            }
+            if(rangeBarChart === 'month') {
+                return [
+                {
+                    time: moment(item?.firstDocument?.createdAt)
+                        .local()
+                        .format('MMM Do'),
+                    valueHumi: item?.humi,
+                    name: 'humi',
+                },
+                {
+                    time: moment(item?.firstDocument?.createdAt)
+                        .local()
+                        .format('MMM Do'),
+                    valueHumi: item?.mois,
+                    name: 'mois',
+                },
+            ]
+            }
+            if(rangeBarChart === 'year') {
+                return [
+                {
+                    time: moment(item?.firstDocument?.createdAt)
+                        .local()
+                        .format('MMM'),
+                    valueHumi: item?.humi,
+                    name: 'humi',
+                },
+                {
+                    time: moment(item?.firstDocument?.createdAt)
+                        .local()
+                        .format('MMM'),
+                    valueHumi: item?.mois,
+                    name: 'mois',
+                },
+            ]
+            }
+            return [
+                {
+                    time: moment(item?.firstDocument?.createdAt)
+                        .local()
+                        .format('HH') + 'h',
+                    valueHumi: item?.humi,
+                    name: 'humi',
+                },
+                {
+                    time: moment(item?.firstDocument?.createdAt)
+                        .local()
+                        .format('HH') + 'h',
                     valueHumi: item?.mois,
                     name: 'mois',
                 },
             ];
         });
+        console.log("🚀 ~ file: TempChart.jsx ~ line 162 ~ humiAndMois ~ humiAndMois", humiAndMois)
 
         let newHumiAndMois = humiAndMois.flat();
 
@@ -192,7 +273,9 @@ const TempHumiChart = () => {
                 ? getTempDataByDay
                 : rangeBarChart === 'month'
                 ? getTempDataByMonth
-                : getTempDataByYear;
+                : rangeBarChart === 'year'
+                ? getTempDataByYear
+                : getTempData;
 
         axios
             .get(apiRain)
@@ -224,10 +307,16 @@ const TempHumiChart = () => {
                     Month
                 </button>
                 <button
-                    className='hover:opacity-50'
+                    className='hover:opacity-50 border-r border-gray-500 pr-2'
                     onClick={() => setRangeBarChart('year')}
                 >
                     Year
+                </button>
+                <button
+                    className='hover:opacity-50'
+                    onClick={() => setRangeBarChart('last-data')}
+                >
+                    Recently
                 </button>
             </div>
             {config && <DualAxes {...config} />}

@@ -65,8 +65,8 @@ const Contact = () => {
     }, []);
 
     return (
-        <div className='grid grid-cols-[1fr_4fr] gap-x-4 h-full'>
-            <div className='h-full flex flex-col bg-white rounded-2xl'>
+        <div className='grid grid-cols-[1fr_4fr] gap-x-4 h-[90vh]'>
+            <div className='h-full flex flex-col bg-white rounded-2xl shadow-lg'>
                 <h3 className='mt-2 capitalize text-center text-2xl font-bold'>
                     CONTACT
                 </h3>

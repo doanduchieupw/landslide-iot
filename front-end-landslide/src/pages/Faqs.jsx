@@ -43,12 +43,12 @@ const Faqs = () => {
     };
 
     return (
-        <div className='flex flex-col items-center '>
+        <div className='flex flex-col items-center mt-5'>
             <span className="text-4xl font-bold text-royal-blue mb-2">FAQS</span>
             {faqs.map((faq, idx) => (
                 <div key={idx} className='w-3/5'>
                     <div
-                        className='px-5 py-3 shadow-md bg-royal-blue opacity-80 text-white rounded-md mb-4'
+                        className='px-5 py-3 shadow-md bg-royal-blue opacity-80 text-white rounded-md mb-4 cursor-pointer hover:opacity-100'
                         onClick={() => tongleFAQS(idx)}
                     >
                         {faq.open ? (

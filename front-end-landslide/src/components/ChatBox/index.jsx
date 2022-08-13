@@ -76,7 +76,7 @@ const ChatBox = ({
     }, [messages])
 
     return (
-        <div className='h-[90vh] bg-white rounded-2xl relative'>
+        <div className='h-[90vh] bg-white rounded-2xl relative shadow-xl'>
             {/* overflow-scroll overflow-x-hidden */}
             <div className='flex flex-col h-[90%] mt-2 '>
                 <SimpleBar style={{ maxHeight: `100%` }}>
@@ -117,7 +117,7 @@ const ChatBox = ({
                     ))}
                 </SimpleBar>
             </div>
-            <div className='absolute bottom-1 w-full h-14 flex gap-x-2'>
+            <div className='absolute bottom-1 w-full h-14 flex gap-x-2 items-center'>
                 <InputEmoji
                     value={text}
                     onChange={setText}
@@ -128,8 +128,7 @@ const ChatBox = ({
                     theme='light'
                 />
                 <div
-                    type='button'
-                    className='inline-block rounded-full bg-blue-600 text-white leading-normal uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-10 h-10 my-auto mr-2'
+                    className='rounded-full bg-blue-600 text-white leading-normal uppercase shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-10 h-10 mr-2 flex justify-center items-center cursor-pointer'
                     onClick={handleSend}
                 >
                     <FontAwesomeIcon icon={faPaperPlane} />

@@ -1,4 +1,4 @@
-import { Home, Register, Accelerometer, Login, Gyroscope, Contact, Rain, Temp,   Faqs } from '../pages';
+import { Home, Register, Accelerometer, Login, Gyroscope, ContactPage, Rain, Temp, Faqs } from '../pages';
 
 //Public Routes
 const publicRoutes = [
@@ -10,7 +10,7 @@ const publicRoutes = [
     { path: '/register', component: Register, layout: 'none'},
     { path: '/login', component: Login, layout: 'none'},
     { path: '/faqs', component: Faqs,},
-    { path: '/contact', component: Contact,},
+    { path: '/contact', component: ContactPage,},
     // { path: '/logout', },
 ];
 const privateRoutes = [];
